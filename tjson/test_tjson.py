@@ -2,7 +2,7 @@ from unittest import TestCase
 import warnings
 from tjson.errors import TJSONWarning, TypeMismatchWarning, InvalidKeyWarning
 
-from tjson.node import Node
+from tjson.tjson import TJ
 
 
 class TestNode(TestCase):
@@ -39,7 +39,7 @@ class TestNode(TestCase):
             ],
         }
 
-        self.node = Node(self.data, [], [])
+        self.node = TJ(self.data, [], [])
 
         # TJSON warnings should cause test failures, unless actually expected
         warnings.simplefilter('error', TJSONWarning)
