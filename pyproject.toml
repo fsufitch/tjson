@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "tjson"
+name = "tj_json"
 version = "1.0.0"
 description = "Accesss utility for JSON-shaped Python objects"
 authors = ["Filip Sufitchi <fsufitchi@gmail.com>"]
