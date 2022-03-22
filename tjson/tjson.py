@@ -43,9 +43,9 @@ class TJ(Generic[_T]):
 
     def __iter__(self):
         if isinstance(self.value, list):
-            yield from (TJ(it, [*self._path, i], []) for i, it in enumerate(self.value))
+            yield from (TJ(it, [*self._path, i], [*self.warnings]) for i, it in enumerate(self.value))
         elif isinstance(self.value, dict):
-            yield from (TJ(it, [*self._path, k], []) for k, it in self.value.items())
+            yield from (TJ(it, [*self._path, k], [*self.warnings]) for k, it in self.value.items())
         else:
             warn(TypeMismatchWarning(f"Cannot iterate over {type(self.value)} at path {self.path}"), stacklevel=2)
 
