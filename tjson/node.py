@@ -43,13 +43,11 @@ class Node(Generic[_T]):
 
     def __iter__(self):
         if isinstance(self.value, list):
-            yield from enumerate(cast(_JSONValue, it) for it in self.value)
-            return
-        if isinstance(self.value, dict):
-            yield from cast(Dict[str, _JSONValue], self.value).items()
-            return
-        warn(TypeMismatchWarning(f"Cannot iterate over {type(self.value)} at path {self.path}"), stacklevel=2)
-        yield from []
+            yield from (Node(it, [*self._path, i], []) for i, it in enumerate(self.value))
+        elif isinstance(self.value, dict):
+            yield from (Node(it, [*self._path, k], []) for k, it in self.value.items())
+        else:
+            warn(TypeMismatchWarning(f"Cannot iterate over {type(self.value)} at path {self.path}"), stacklevel=2)
 
     @property
     def path(self) -> str:
@@ -103,7 +101,7 @@ class Node(Generic[_T]):
 
     @property
     def object_or_null(self) -> Node[Optional[Dict[str, _JSONValue]]]:
-        return self._cast(dict, 2)
+        return self._cast_or_null(dict, 2)
 
     def _cast(self, typ: Type[_R], stacklevel: int = 1) -> Node[_R]:
         if not callable(typ):
