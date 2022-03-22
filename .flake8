@@ -6,7 +6,7 @@ exclude=
     build
     dist
 
-max-line-length=120
+max-line-length=180
 
 ignore=
     E121  # Hanging indent rules are a pain and sometimes result in uglier code. 
