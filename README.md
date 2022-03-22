@@ -6,7 +6,9 @@ Have you had to deal with deeply nested JSON documents in Python, only to be gre
 
 `tjson` has no dependencies outside the standard Python library. Simply install it with Pip or your favorite dependency manager.
 
-    pip install tjson
+    pip install tj_json
+
+> `tjson` is taken on PyPI by a dead project, and I haven't bothered to take over the name.
 
 ## Usage
 
