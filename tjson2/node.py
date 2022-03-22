@@ -1,6 +1,7 @@
 from __future__ import annotations
 from warnings import warn
 from typing import Any, Dict, Generic, Iterable, List, Optional, Sequence, Tuple, Type, TypeVar, Union, cast
+import warnings
 
 
 _JSONValue = Union[None, bool, str, int, float, List["_JSONValue"], Dict[str, "_JSONValue"]]
@@ -130,18 +131,3 @@ def _amend_warns(warns: Sequence[Warning], warning: Warning, stacklevel: int = 1
     if not warns:
         warn(warning, stacklevel= stacklevel + 1)
     return (*warns, warning)
-
-
-r = {'foo': 'bar', 'baz': [1, 2, [3, 4, 5]]}
-n = Node(r, [], [])
-
-n['baz'].value
-
-a = n['baz'][2].string.value
-print(a)
-
-a = n['baz'][2].number_or_null.value
-print(a)
-
-for x in iter(n):
-    print("found", x)
