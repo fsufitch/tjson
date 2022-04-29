@@ -42,7 +42,6 @@ class TJ(Generic[_T]):
     def __getitem__(self, key: Union[int, str, Any]) -> TJ[JSONValue]:
         next_value: JSONValue = None
         add_warning: Optional[TJSONWarning] = None
-        next_path = (*self._split_path, key)
 
         if isinstance(key, int):
             if not isinstance(self.value, list):
@@ -75,6 +74,7 @@ class TJ(Generic[_T]):
         next_warnings = self.warnings
         if add_warning:
             next_warnings = _amend_warns(self.warnings, add_warning, 2)
+        next_path = [*self._split_path, key]
         return TJ(next_value, next_path, next_warnings)
 
     def __contains__(self, key: Union[int, str]) -> bool:
@@ -87,12 +87,12 @@ class TJ(Generic[_T]):
     def __iter__(self):
         if isinstance(self.value, list):
             yield from (
-                TJ(it, [*self.path, i], [*self.warnings])
+                TJ(it, [*self._split_path, i], [*self.warnings])
                 for i, it in enumerate(self.value)
             )
         elif isinstance(self.value, dict):
             yield from (
-                TJ(it, [*self.path, k], [*self.warnings])
+                TJ(it, [*self._split_path, k], [*self.warnings])
                 for k, it in self.value.items()
             )
         else:
@@ -134,7 +134,7 @@ class TJ(Generic[_T]):
         if not isinstance(self.value, (int, float)):
             return TJ(
                 0,
-                self.path,
+                self._split_path,
                 _amend_warns(
                     self.warnings,
                     TypeMismatchWarning(
@@ -150,7 +150,7 @@ class TJ(Generic[_T]):
         if not isinstance(self.value, (int, float, type(None))):
             return TJ(
                 None,
-                self.path,
+                self._split_path,
                 _amend_warns(
                     self.warnings,
                     TypeMismatchWarning(
@@ -185,7 +185,7 @@ class TJ(Generic[_T]):
                 TJ[_R],
                 TJ(
                     typ(),
-                    self.path,
+                    self._split_path,
                     _amend_warns(
                         self.warnings,
                         TypeMismatchWarning(
@@ -203,7 +203,7 @@ class TJ(Generic[_T]):
                 TJ[Optional[_R]],
                 TJ(
                     None,
-                    self.path,
+                    self._split_path,
                     _amend_warns(
                         self.warnings,
                         TypeMismatchWarning(
