@@ -22,6 +22,7 @@ pylint = "^2.13.7"
 
 [tool.pylint.format]
 max-line-length = "88"
+no-docstring-rgx = ".*"
 
 [tool.black]
 line-length = 88
