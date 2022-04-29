@@ -2,6 +2,9 @@
 
 Have you had to deal with deeply nested JSON documents in Python, only to be greeted by `KeyError`? What about only to run across weird type issues, and mysterious bugs? Have you wished that you could easily get type hinting on values that you pull out of your JSON documents? `tjson` is here to help.
 
+[![Python package](https://github.com/fsufitch/tjson/actions/workflows/python-package.yml/badge.svg?branch=main)](https://github.com/fsufitch/tjson/actions/workflows/python-package.yml) [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+
+
 ## Installing
 
 `tjson` has no dependencies outside the standard Python library. Simply install it with Pip or your favorite dependency manager.
