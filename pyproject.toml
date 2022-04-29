@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "tj_json"
-version = "1.0.1"
+version = "1.1.0"
 description = "Accesss utility for JSON-shaped Python objects"
 authors = ["Filip Sufitchi <fsufitchi@gmail.com>"]
 license = "MIT"
@@ -16,9 +16,25 @@ python = "^3.8"
 
 [tool.poetry.dev-dependencies]
 pytest = "^7.1.1"
-flake8 = "^4.0.1"
 pyright = "^1.1.230"
-autopep8 = "^1.6.0"
+black = "^22.3.0"
+pylint = "^2.13.7"
+
+[tool.pylint.format]
+max-line-length = "88"
+no-docstring-rgx = ".*"
+
+[tool.black]
+line-length = 88
+target-version = ['py37']
+include = '\.pyi?$'
+
+[tool.isort]
+profile = "black"
+
+[tool.pyright]
+pythonPlatform = "All"
+typeCheckingMode = "strict"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]

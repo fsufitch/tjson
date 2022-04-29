@@ -1,11 +1,13 @@
+"""Centralized holding area for TJSON errors"""
+
 
 class TJSONWarning(Warning):
-    pass
+    """Base TJSON warning"""
 
 
 class InvalidKeyWarning(TJSONWarning):
-    pass
+    """Warning indicating a key was missing, inappropriate, or otherwise invalid"""
 
 
 class TypeMismatchWarning(TJSONWarning):
-    pass
+    """Warning indicating that the type of an object did not match expectations"""
