@@ -18,11 +18,11 @@ from warnings import warn
 
 from tjson.errors import InvalidKeyWarning, TJSONWarning, TypeMismatchWarning
 
-_JSONValue = Union[
-    None, bool, str, int, float, List["_JSONValue"], Dict[str, "_JSONValue"]
+JSONValue = Union[
+    None, bool, str, int, float, List["JSONValue"], Dict[str, "JSONValue"]
 ]
-_T = TypeVar("_T", bound=_JSONValue)
-_R = TypeVar("_R", bound=_JSONValue)
+_T = TypeVar("_T", bound=JSONValue)
+_R = TypeVar("_R", bound=JSONValue)
 
 _PathElement = Union[int, str]
 _Path = Sequence[_PathElement]
@@ -39,8 +39,8 @@ class TJ(Generic[_T]):
         self.value = value
         self.warnings: Sequence[Warning] = warns or []
 
-    def __getitem__(self, key: Union[int, str, Any]) -> TJ[_JSONValue]:
-        next_value: _JSONValue = None
+    def __getitem__(self, key: Union[int, str, Any]) -> TJ[JSONValue]:
+        next_value: JSONValue = None
         add_warning: Optional[TJSONWarning] = None
         next_path = (*self._split_path, key)
 
@@ -72,8 +72,10 @@ class TJ(Generic[_T]):
         else:
             raise SyntaxError(f"Invalid node lookup: {key}")
 
-        next_warnings = _amend_warns(self.warnings, add_warning, 2)
-        return TJ(next_value, next_path, next_warnings, 2)
+        next_warnings = self.warnings
+        if add_warning:
+            next_warnings = _amend_warns(self.warnings, add_warning, 2)
+        return TJ(next_value, next_path, next_warnings)
 
     def __contains__(self, key: Union[int, str]) -> bool:
         if isinstance(key, int) and isinstance(self.value, list):
@@ -103,8 +105,8 @@ class TJ(Generic[_T]):
 
     @property
     def path(self) -> str:
-        parts = []
-        for elem in self.path:
+        parts: List[str] = []
+        for elem in self._split_path:
             if isinstance(elem, str) and elem.isalnum() and elem[0].isalpha():
                 parts.append(f".{elem}")
             else:
@@ -160,19 +162,19 @@ class TJ(Generic[_T]):
         return cast(TJ[Optional[Union[int, float]]], self)
 
     @property
-    def array(self) -> TJ[List[_JSONValue]]:
+    def array(self) -> TJ[List[JSONValue]]:
         return self._cast(list, 2)
 
     @property
-    def array_or_null(self) -> TJ[Optional[List[_JSONValue]]]:
+    def array_or_null(self) -> TJ[Optional[List[JSONValue]]]:
         return self._cast_or_null(list, 2)  # type: ignore
 
     @property
-    def object(self) -> TJ[Dict[str, _JSONValue]]:
+    def object(self) -> TJ[Dict[str, JSONValue]]:
         return self._cast(dict, 2)
 
     @property
-    def object_or_null(self) -> TJ[Optional[Dict[str, _JSONValue]]]:
+    def object_or_null(self) -> TJ[Optional[Dict[str, JSONValue]]]:
         return self._cast_or_null(dict, 2)
 
     def _cast(self, typ: Type[_R], stacklevel: int = 1) -> TJ[_R]:

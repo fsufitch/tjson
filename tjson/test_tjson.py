@@ -4,13 +4,13 @@ from unittest import TestCase
 import warnings
 from tjson.errors import TJSONWarning, TypeMismatchWarning, InvalidKeyWarning
 
-from tjson.tjson import TJ
+from tjson.tjson import TJ, JSONValue
 
 
-class TestNode(TestCase):
+class TestTJ(TestCase):
     def setUp(self):
         # Data contains something like a REST API's response
-        self.data = {
+        self.data: JSONValue = {
             "success": True,
             "resultCount": 123,
             "nextPageToken": "abcdef",
